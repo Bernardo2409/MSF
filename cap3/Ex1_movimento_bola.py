@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sympy as sp
 
-v0 = 100*1000/3600
+v0 = 100*1000/3600  #km/h para m/s
 theta = np.deg2rad(10)
 g = 9.8
 vT = 100*1000/3600
