@@ -14,7 +14,7 @@ g = 9.8
 vT = 100 * 1000 / 3600
 dAr = 1.225
 A = np.pi * R ** 2
-D = (m * g) / (vT**2)  # Fórmula CORRIGIDA (coeficiente de arrasto linear)
+D = (m * g) / (vT**2)  #(coeficiente de arrasto linear)
 
 def f(w):
     t = np.arange(t0, tf, dt)

@@ -1,0 +1,44 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+dt = 0.001
+t = np.arange(0,200+dt,dt)
+
+ax = np.zeros(t.size)
+vx = np.zeros(t.size)
+x = np.zeros(t.size)
+
+u = 0.004               #coeficiente de resistencia de rolamento
+Cres = 0.25              #coeficiente de resistencia do ar
+area = 2              #area frontal
+Par = 1.225             #densidade do ar
+m = 2000                  #massa do ciclista
+Potencia = 40000    #294.20 potencia do ciclista passado de hp para w
+vx[0] = 1               #velocidade inicial dada pelo empurrão
+g = 9.8
+P= m*g 
+inclinação = 5
+Px=P*np.sin(np.radians(inclinação))
+Py=P*np.cos(np.radians(inclinação))
+N=Py  
+
+
+for i in range(t.size-1):
+    Fcic = Potencia/vx[i] 
+    FRes = -(Cres/2)*area*Par*vx[i]**2 
+    FRol = u*N          #Força de resistencia ao rolamento Frol= u*N=u*m*g
+    F = Fcic + FRes - FRol - Px
+    ax[i] = F/m  
+    vx[i+1] = vx[i] + ax[i]*dt
+    x[i+1] = x[i] + vx[i]*dt
+
+
+#GRÁFICO POSIÇÃO TEMPO
+plt.plot(t,x, label="position")
+plt.grid()
+plt.show()
+
+#GRÁFICO VELOCIDADE TEMPO
+plt.plot(t,vx, label="velocity")
+plt.grid()
+plt.show()
