@@ -1,0 +1,156 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ==============================================
+# PARÂMETROS DO SISTEMA E FUNÇÕES BÁSICAS
+# ==============================================
+
+# Constantes físicas
+m = 1.0       # massa (kg)
+k = 1.0       # constante elástica (N/m)
+α = -0.01     # coeficiente cúbico (N/m²)
+
+# Função da energia potencial
+def U(x):
+    return 0.5*k*x**2 + (1/3)*α*x**3
+
+# Função da força (equação do movimento)
+def F(x):
+    return -k*x - α*x**2
+
+# ==============================================
+# IMPLEMENTAÇÃO DO MÉTODO NUMÉRICO (RK4)
+# ==============================================
+
+def rk4_step(f, t, y, dt):
+    """Um passo do método RK4 para sistemas de EDOs"""
+    k1 = f(t, y)
+    k2 = f(t + dt/2, y + dt/2 * k1)
+    k3 = f(t + dt/2, y + dt/2 * k2)
+    k4 = f(t + dt, y + dt * k3)
+    return y + dt * (k1 + 2*k2 + 2*k3 + k4) / 6
+
+def cubic_oscillator(t, y):
+    """Equações do movimento para o oscilador cúbico"""
+    x, v = y
+    dxdt = v
+    dvdt = F(x)/m
+    return np.array([dxdt, dvdt])
+
+# ==============================================
+# CONFIGURAÇÃO DA SIMULAÇÃO
+# ==============================================
+
+dt = 0.001      # passo de tempo menor para maior precisão
+t_max = 30      # tempo total maior para capturar melhor os períodos
+n_steps = int(t_max/dt)
+t_values = np.linspace(0, t_max, n_steps)
+
+# ==============================================
+# PARTE b) SOLUÇÃO PARA x₀ = 1.3 m, v₀ = 0 m/s
+# ==============================================
+
+x0_b = 1.3
+v0_b = 0
+
+# Simulação
+y = np.array([x0_b, v0_b])
+x_values_b = np.zeros(n_steps)
+v_values_b = np.zeros(n_steps)
+x_values_b[0] = y[0]
+v_values_b[0] = y[1]
+
+for i in range(1, n_steps):
+    y = rk4_step(cubic_oscillator, t_values[i-1], y, dt)
+    x_values_b[i] = y[0]
+    v_values_b[i] = y[1]
+
+# Análise dos resultados
+E_b = 0.5*m*v_values_b**2 + U(x_values_b)
+x_min_b = np.min(x_values_b)
+x_max_b = np.max(x_values_b)
+
+# Cálculo preciso do período
+peaks_b = []
+for i in range(1, len(x_values_b)-1):
+    if x_values_b[i] > x_values_b[i-1] and x_values_b[i] > x_values_b[i+1]:
+        peaks_b.append(i)
+
+if len(peaks_b) >= 2:
+    T_b = t_values[peaks_b[1]] - t_values[peaks_b[0]]
+    freq_b = 1/T_b
+else:
+    freq_b = np.sqrt(k/m)/(2*np.pi)
+
+# Resultados
+print("\nPARTE b) x₀ = 1.3 m, v₀ = 0 m/s")
+print(f"Energia mecânica: {E_b[0]:.3f} J")
+print(f"Limites do movimento: {x_max_b:.2f} m e {x_min_b:.2f} m")
+print(f"Frequência: {freq_b:.3f} Hz")
+
+# ==============================================
+# PARTE c) SOLUÇÃO PARA x₀ = 2.9 m, v₀ = 0 m/s
+# ==============================================
+
+x0_c = 2.9
+v0_c = 0
+
+# Simulação
+y = np.array([x0_c, v0_c])
+x_values_c = np.zeros(n_steps)
+v_values_c = np.zeros(n_steps)
+x_values_c[0] = y[0]
+v_values_c[0] = y[1]
+
+for i in range(1, n_steps):
+    y = rk4_step(cubic_oscillator, t_values[i-1], y, dt)
+    x_values_c[i] = y[0]
+    v_values_c[i] = y[1]
+
+# Análise dos resultados
+E_c = 0.5*m*v_values_c**2 + U(x_values_c)
+x_min_c = np.min(x_values_c)
+x_max_c = np.max(x_values_c)
+
+# Cálculo preciso do período
+peaks_c = []
+for i in range(1, len(x_values_c)-1):
+    if x_values_c[i] > x_values_c[i-1] and x_values_c[i] > x_values_c[i+1]:
+        peaks_c.append(i)
+
+if len(peaks_c) >= 2:
+    T_c = t_values[peaks_c[1]] - t_values[peaks_c[0]]
+    freq_c = 1/T_c
+else:
+    freq_c = np.sqrt(k/m)/(2*np.pi)
+
+# Resultados
+print("\nPARTE c) x₀ = 2.9 m, v₀ = 0 m/s")
+print(f"Energia mecânica: {E_c[0]:.2f} J")
+print(f"Limites do movimento: {x_max_c:.2f} m e {x_min_c:.2f} m")
+print(f"Frequência: {freq_c:.3f} Hz")
+
+# ==============================================
+# GRÁFICOS
+# ==============================================
+
+plt.figure(figsize=(12, 8))
+
+# Gráfico do caso b)
+plt.subplot(2, 1, 1)
+plt.plot(t_values, x_values_b)
+plt.title('Movimento do Oscilador Cúbico - x₀ = 1.3 m')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Posição (m)')
+plt.grid(True)
+
+# Gráfico do caso c)
+plt.subplot(2, 1, 2)
+plt.plot(t_values, x_values_c)
+plt.title('Movimento do Oscilador Cúbico - x₀ = 2.9 m')
+plt.xlabel('Tempo (s)')
+plt.ylabel('Posição (m)')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
