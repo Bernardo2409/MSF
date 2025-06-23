@@ -45,7 +45,7 @@ t_values = np.linspace(0, t_max, n_steps)
 # PARTE a) GRÁFICO DA ENERGIA POTENCIAL
 # ==============================================
 
-x_vals = np.linspace(-5, 5, 1000)
+x_vals = np.linspace(-8, 5, 1000)
 U_vals = U(x_vals)
 
 plt.figure(figsize=(6, 4))
@@ -53,7 +53,9 @@ plt.plot(x_vals, U_vals, linewidth=2)
 plt.title("Oscilador Cúbico")
 plt.xlabel("x (m)")
 plt.ylabel("Energia Potencial (J)")
-plt.ylim(0, 18)
+#limitações do gráfico
+plt.xlim(-8, 4)
+plt.ylim(0, 100)
 plt.grid(True)
 plt.tight_layout()
 plt.show()
@@ -160,3 +162,32 @@ plt.grid(True)
 
 plt.tight_layout()
 plt.show()
+
+
+# ==============================================
+# GRÁFICOS Série de Fourier
+# ==============================================
+# Sinal: posição no tempo (caso b - x₀ = 2.2 m, v₀ = 0)
+x_signal = x_values_b - np.mean(x_values_b)  # remove a média
+
+# FFT
+X_f = np.fft.fft(x_signal)
+frequencies = np.fft.fftfreq(n_steps, dt)
+
+# Apenas frequências positivas
+mask = frequencies > 0
+frequencies = frequencies[mask]
+amplitudes = np.abs(X_f[mask])
+
+# Gráfico do espectro
+plt.figure(figsize=(8, 4))
+plt.plot(frequencies, amplitudes, color='purple')
+plt.title("Análise de Fourier do Movimento (x₀ = 2.2 m)")
+plt.xlabel("Frequência (Hz)")
+plt.ylabel("Amplitude")
+plt.grid(True)
+plt.xlim(0, 2)  # podes ajustar para ver melhor os picos relevantes
+plt.tight_layout()
+plt.show()
+
+
