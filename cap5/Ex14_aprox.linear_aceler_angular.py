@@ -26,32 +26,23 @@ dtheta[0] = dtheta0
 # Método de Euler para resolver a EDO
 for i in range(1, len(t)):
     dtheta[i] = dtheta[i-1] - (g / L) * theta[i-1] * dt
-    theta[i] = theta[i-1] + dtheta[i-1] * dt
+    theta[i] = theta[i-1] + dtheta[i] * dt
 
 # Solução analítica para comparação
 theta_analytical = theta0 * np.cos(omega0 * t) + (dtheta0 / omega0) * np.sin(omega0 * t)
 
 # Amplitude teórica
-amplitude_teorica = np.sqrt(theta0**2 + (dtheta0 / omega0)**2)
-
-# Amplitude numérica (máximo valor absoluto de theta)
-amplitude_numerica = np.max(np.abs(theta))
+amplitude= np.sqrt(theta0**2 + (dtheta0 / omega0)**2)
 
 # Período teórico
-periodo_teorico = 2 * np.pi / omega0
+periodo = 2 * np.pi / omega0
 
-# Período numérico (tempo entre dois máximos consecutivos)
-# Encontrar os picos (máximos locais)
-peaks = np.where((theta[1:-1] > theta[:-2]) & (theta[1:-1] > theta[2:]))[0] + 1
-if len(peaks) >= 2:
-    periodo_numerico = t[peaks[1]] - t[peaks[0]]
-else:
-    periodo_numerico = periodo_teorico
 
 # Gráfico
 plt.figure(figsize=(10, 6))
-plt.plot(t, theta, label='Solução Numérica', color='blue')
-plt.plot(t, theta_analytical, '--', label='Solução Analítica', color='red')
+
+plt.plot(t, theta_analytical, '-', label='Solução Analítica', color='blue')
+plt.plot(t, theta, 'r--', label='Solução Numérica (Euler-Cromer)')
 plt.xlabel('Tempo (s)')
 plt.ylabel('Ângulo (rad)')
 plt.title('Movimento do Pêndulo Simples')
@@ -59,7 +50,6 @@ plt.legend()
 plt.grid()
 plt.show()
 
-print(f"Amplitude teórica: {amplitude_teorica:.4f} rad")
-print(f"Amplitude numérica: {amplitude_numerica:.4f} rad")
-print(f"Período teórico: {periodo_teorico:.4f} s")
-print(f"Período numérico: {periodo_numerico:.4f} s")
+print(f"Amplitude teórica: {amplitude:.3f} rad")
+
+print(f"Período teórico: {periodo:.3f} s")

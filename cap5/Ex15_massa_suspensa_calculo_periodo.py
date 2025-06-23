@@ -18,7 +18,7 @@ def f(t, y):
     domega_dt = -(g / L) * np.sin(theta)
     return np.array([dtheta_dt, domega_dt])
 
-# Método RK4
+# Método Range-Kutta de quarta ordem
 def rk4_step(t, y, dt):
     k1 = f(t, y) * dt
     k2 = f(t + dt/2, y + k1/2) * dt
