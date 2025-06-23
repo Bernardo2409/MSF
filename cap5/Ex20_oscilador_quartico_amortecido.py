@@ -50,7 +50,7 @@ v_a = y_a[:, 1]
 
 # Gráfico para (a)
 plt.figure(figsize=(10, 5))
-plt.plot(t, x_a, label='x(t)')
+plt.plot(t, x_a, label=f'x(t), dt = {dt}')
 plt.xlabel('Tempo (s)')
 plt.ylabel('Posição (m)')
 plt.title('Lei do movimento para x(0)=3 m, v(0)=0 m/s (RK4)')
@@ -85,7 +85,7 @@ v_c = y_c[:, 1]
 
 # Gráfico para (c)
 plt.figure(figsize=(10, 5))
-plt.plot(t, x_c, label='x(t)')
+plt.plot(t, x_c, label=f'x(t), dt = {dt}')
 plt.xlabel('Tempo (s)')
 plt.ylabel('Posição (m)')
 plt.title('Lei do movimento para x(0)=-2 m, v(0)=-4 m/s (RK4)')

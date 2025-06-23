@@ -67,7 +67,7 @@ else:
     print("Não foram encontrados máximos suficientes para calcular o período")
 
 # Configuração da simulação para a parte c)
-wf_values = np.linspace(0.2, 2.0, 30)  # Valores de frequência a testar
+wf_values = np.linspace(0.2, 2.0, 300)  # Valores de frequência a testar
 amplitudes = []  # Armazenar amplitudes para cada frequência
 
 for wf in wf_values:
@@ -100,7 +100,7 @@ for wf in wf_values:
 
 # Plot do gráfico de amplitude vs frequência
 plt.figure(figsize=(10, 5))
-plt.plot(wf_values, amplitudes, 'b-', linewidth=2, marker='o', markersize=5)
+plt.plot(wf_values, amplitudes, 'b-', linewidth=2, markersize=5)
 plt.title('Resposta em Amplitude do Oscilador Forçado')
 plt.xlabel('Frequência da Força Externa (rad/s)')
 plt.ylabel('Amplitude (m)')
@@ -108,7 +108,6 @@ plt.grid(True)
 
 # Destacar a frequência de ressonância teórica
 w0 = np.sqrt(k/m)  # Frequência natural
-plt.axvline(x=w0, color='r', linestyle='--', label=f'Frequência natural ($\omega_0$ = {w0:.2f} rad/s)')
 plt.legend()
 
 plt.show()

@@ -12,8 +12,8 @@ x0_a = 4.0 #m
 v0_0 = 0.0 #m/s
 
 t_start = 0
-t_end = 100
-dt = 0.01
+t_end = 300
+dt = 0.0001
 t = np.arange(t_start, t_end, dt)
 
 def F_ext(t):
@@ -135,3 +135,8 @@ E_estacionario_c = E_c[-int(20/dt):]
 print("\nVariação da energia no regime estacionário:")
 print(f"Caso a: Média = {np.mean(E_estacionario_a):.4f} J, Desvio padrão = {np.std(E_estacionario_a):.4f} J")
 print(f"Caso c: Média = {np.mean(E_estacionario_c):.4f} J, Desvio padrão = {np.std(E_estacionario_c):.4f} J")
+
+if not np.allclose(np.mean(E_estacionario_a), np.mean(E_estacionario_c), atol=1e-6):
+    print(f"Não conserva a energia mecânica.")
+else:
+    print(f"Conserva a energia mecânica.")
